@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+
+    <title>Monte seu gráfico!!</title>
+
+    <!-- Css -->
+    <link rel="stylesheet" href="estilo.css">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <!-- Fontawesome -->
+    <script src="https://kit.fontawesome.com/fa019dc073.js" crossorigin="anonymous"></script>
+    
+</head>
+<body>
+    
+    <header>
+        <div class="container">
+            <nav class="navbar navbar-expand-xl+">
+            
+                <!--Logo-->
+                <a class="navbar-brand" href="#">
+                    <div class="row">
+                        <div class="col-4">
+                            <i class="fas fa-chart-pie"></i> 
+                        </div>
+
+                        <div class="col-4">
+                            <span>
+                                Crie<br>
+                                &nbsp; &nbsp; Gráficos
+                            </span>
+                        </div>
+                    </div>
+                     
+                </a>
+            </nav>
+        </div>
+        
+    </header>
+
+    <section class="container centro">
+        <div class="row">
+            <!--Coluna gráfico-->
+            <section class="col-lg-6 mb-4" id="ApresentarCanvas">
+                <h2 class="display-4"> Visualização do gráfico</h2>
+				<hr>
+
+                <div class="jumbotron" id="boasVindas">
+                    <h1 class="display-4">Aqui aparecerá seu gráfico</h1>
+                    <p class="lead">
+                        Adicione ao menos um valor para começar a monta-lo. <br>
+                        Você pode adicionar quantos valores você quiser apertando o botão de <i class="fas fa-plus" style="color: green"></i> a seguir
+                    </p>
+                    <hr class="my-4">
+                    <p> Para começar você pode também clicar no botão abaixo </p>
+                    <small>Assim que for adicionado um valor esse aviso desparecerá</small>
+                    <p class="lead">
+                        <button class="btn btn-success btn-lg" data-toggle="modal" data-target="#confirm">Comece agora!</button>
+                    </p>
+                </div>
+
+                <br>
+
+                <!-- chart pie -->
+                <h3 id="Titulo gráfico"></h3>
+                <canvas id="myChart" width="400" height="400" class="d-none"></canvas>
+
+			</section>
+			
+			<hr>
+
+            <!--Coluna montagem-->
+            <section class="col-lg-6">
+                <h2 class="display-4"> Montagem do gráfico</h2>
+                <hr>
+
+                <button class="btn btn-outline-success" data-toggle="modal" data-target="#confirm"> <i class="fas fa-plus"></i> Adicionar porcentagem </button>
+
+                <hr>
+
+                <button class="btn btn-outline-danger" data-toggle="modal" data-target="#remover" onclick="listaValores()"> <i class="fas fa-minus"></i> Remover porcentagem </button>
+                 <br>
+                
+                <!-- Modal para adicionar % -->
+                <div class="modal fade" id="confirm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+							<h5 class="modal-title text-success">Adicionar porcentagem</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							</div>
+							<div class="modal-body">
+								<form>
+									<label for="nome">Nome da porcentagem</label> <br>
+									<input type="text" class="form-control" id="nome" maxlength="50"> <br>
+
+									<label for="cor"> Cor da porcentagem </label>
+                                    <input type="color" id="cor" class="form-control"> <br>
+
+									<label for="porcent">Quantos porcento</label>
+									<input type="number" class="form-control" id="porcent" max="100" min="0">
+								</form>
+
+								<small class="text-danger">Aviso: Não deixe a soma da porcentagem passar de 100%</small>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+								<button type="button" id="add" class="btn btn-success" onclick="recebeValores()">Adicionar</button>
+							</div>
+						</div>
+                    </div>
+				</div>
+
+                <!-- Modal para remover % -->
+                <div class="modal fade" id="remover" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-danger">Remover porcentagem</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body" id="modalRemoverBody">
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+				
+				<hr>
+
+				<button class="btn btn-outline-danger btn-block" onclick="removeValores(0,999)"> Resetar gráfico  </button>
+            </section>
+        </div>
+    </section>
+
+
+    <!-- Jquery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+
+    <!-- Popjs -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+
+    <!-- bootstrap -->
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+
+    <!-- Script -->
+    <script src="script.js"></script>
+</body>
+</html>

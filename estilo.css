@@ -1,0 +1,73 @@
+/***********************************************
+Geral*/
+@font-face{
+    font-family: Lazer84;
+    src: url(fontes/Lazer84.woff);
+}
+
+@font-face{
+    src: url(fontes/SourceSansPro-Regular.woff);
+    font-family: SansPro;
+}
+
+body{
+    font-family: SansPro;
+    background: #dbdbdb !important;
+}
+
+/*******************************************
+Header*/
+
+header{
+    background: #e28623;
+}
+
+header .navbar-brand i{
+    color: white;
+    font-size: 70px;
+}
+
+header .navbar-brand span{
+    color: white;
+    font-family: Lazer84;
+    font-size: 20px;
+}
+
+header .navbar-toggler i{
+    color: white;
+    font-size: 30px;
+}
+
+header .navbar-toggler i:hover{
+    outline: none;
+}
+
+header .nav-link{
+    color: white;
+    font-size: 18px;
+}
+
+header .nav-link:hover{
+    text-decoration: underline;
+    color: #f2f2f2;
+}
+
+/************************************************
+Conteúdo*/
+.centro{
+    background-color: white;
+    padding: 25px;
+}
+
+.display-4{
+    font-size: 30px !important;
+}
+
+.modal label{
+    font-weight: 700;
+}
+
+.progress{
+    height: 40px !important;
+}
+
