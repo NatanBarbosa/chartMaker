@@ -45,10 +45,18 @@
 
     <section class="container centro">
         <div class="row">
+
             <!--Coluna gráfico-->
             <section class="col-lg-6 mb-4" id="ApresentarCanvas">
                 <h2 class="display-4"> Visualização do gráfico</h2>
-				<hr>
+                <hr>
+                
+                <!-- Tipo do gráfico -->
+                <select name="tipo" id="chartType" class="form-control d-none" onchange="colocaGrafico(true, document.getElementById('chartType').value)">
+                    <option value="pie"> <strong>Selecione o tipo do gráfico</strong> </option>
+                    <option value="pie">Pizza (padrão)</option>
+                    <option value="doughnut">Donut</option>
+                </select>
 
                 <div class="jumbotron" id="boasVindas">
                     <h1 class="display-4">Aqui aparecerá seu gráfico</h1>
@@ -66,7 +74,7 @@
 
                 <br>
 
-                <!-- chart pie -->
+                <!-- chart -->
                 <h3 id="Titulo gráfico"></h3>
                 <canvas id="myChart" width="400" height="400" class="d-none"></canvas>
 

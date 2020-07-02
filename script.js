@@ -57,17 +57,25 @@ let cores = Array()
 let nomes = Array()
 let porcentagens = Array()
 
-function colocaGrafico(atualizarGrafico = false) {
+function colocaGrafico(atualizarGrafico = false, chartType = 'pie') {
     const canvas = document.getElementById('myChart')
 
-    //removendo o canvas e adicionando novamente o jumbutron de boas vindas caso não haja valores
+    //removendo o canvas e adicionando novamente o jumbutron de boas vindas e o select caso não haja valores
+    let jumbotron = document.getElementById('boasVindas')
+    let select = document.getElementById('chartType')
+
     if(porcentagem.length === 0){
-        document.getElementById('boasVindas').className = 'd-block jumbotron'
+        jumbotron.className = 'd-block jumbotron'
         canvas.className = 'd-none'
+        
+        select.className = 'd-none'
+        select.value = 'pie'
+        select.innerHTML = 'Selecione o tipo do gráfico'
     }
     //esconder Boas vindas
-    if(porcentagem.length == 1){
-        document.getElementById('boasVindas').className = 'd-none'
+    if(porcentagem.length >= 1){
+        jumbotron.className = 'd-none'
+        select.className = 'form-control d-block'
     }
 
     //exibir tag canvas
@@ -84,7 +92,7 @@ function colocaGrafico(atualizarGrafico = false) {
 
     let ctx = canvas.getContext('2d');
     let myChart = new Chart(ctx, {
-        type: 'pie',
+        type: chartType,
         data: {
             labels: nomes, //colocar nome dos objetos
             datasets: [{
