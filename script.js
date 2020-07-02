@@ -63,24 +63,24 @@ function colocaGrafico(atualizarGrafico = false, chartType = 'pie') {
     //removendo o canvas e adicionando novamente o jumbutron de boas vindas e o select caso não haja valores
     let jumbotron = document.getElementById('boasVindas')
     let select = document.getElementById('chartType')
+    let botao = document.getElementById('baixarImg')
 
     if(porcentagem.length === 0){
         jumbotron.className = 'd-block jumbotron'
         canvas.className = 'd-none'
         
         select.className = 'd-none'
-        select.value = 'pie'
-        select.innerHTML = 'Selecione o tipo do gráfico'
+
+        botao.className = 'd-none'
     }
-    //esconder Boas vindas
+    //esconder Boas vindas e exibindo o canvas e o botão de baixar img e o de selecionar tipo de gráfico
     if(porcentagem.length >= 1){
         jumbotron.className = 'd-none'
-        select.className = 'form-control d-block'
-    }
+        select.className = 'form-control'
 
-    //exibir tag canvas
-    if(porcentagem.length == 1){
         canvas.className = 'd-block'
+
+        botao.className = 'btn btn-info btn-lg'
     }
 
     //Gráfico chart.js
@@ -149,5 +149,14 @@ function removeValores(start, deleteCount) {
 
     //removendo da barra
     $('#remover').modal('hide') //esconder modal
+}
+
+function baixarGrafico() {
+    let canvas = document.querySelector("#myChart")
+    let botaoImg = document.querySelector("#baixarImg")
+
+    //Transformando o canvas em uma imagem (toDataURL) para poder baixa-lo
+    botaoImg.setAttribute("href", canvas.toDataURL());
+    botaoImg.setAttribute("download", "chart.jpg");
 }
 

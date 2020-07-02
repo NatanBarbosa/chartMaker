@@ -53,7 +53,7 @@
                 
                 <!-- Tipo do gráfico -->
                 <select name="tipo" id="chartType" class="form-control d-none" onchange="colocaGrafico(true, document.getElementById('chartType').value)">
-                    <option value="pie"> <strong>Selecione o tipo do gráfico</strong> </option>
+                    <option value=""> <strong>Selecione o tipo do gráfico</strong> </option>
                     <option value="pie">Pizza (padrão)</option>
                     <option value="doughnut">Donut</option>
                 </select>
@@ -74,8 +74,8 @@
 
                 <br>
 
+                <a class="btn btn-info btn-lg d-none" id="baixarImg" onclick="baixarGrafico()"><i class="fas fa-download"></i> Baixar gráfico</a>
                 <!-- chart -->
-                <h3 id="Titulo gráfico"></h3>
                 <canvas id="myChart" width="400" height="400" class="d-none"></canvas>
 
 			</section>
