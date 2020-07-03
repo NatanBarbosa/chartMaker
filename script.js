@@ -6,6 +6,10 @@ class Porcentagem{
     }
 }
 
+//Arrays que vão conter as configurações
+let cores = Array()
+let nomes = Array()
+let porcentagens = Array()
 let porcentagem = Array()
 
 function recebeValores(){
@@ -13,6 +17,25 @@ function recebeValores(){
     let cor = document.getElementById('cor').value
     let porcent = Number(document.getElementById('porcent').value)
 
+    if(validaValores(nome, cor, porcent)){
+        //se for retornado true, ele coloca o gráfico
+
+        //colocar novo objeto na ultima posição do array
+        porcentagem.push(new Porcentagem(nome, cor, porcent))
+
+        //esconder modal
+        $('#confirm').modal('hide')
+
+        colocaGrafico()
+    }
+
+    //limpar modal 
+    document.getElementById('nome').value = ''
+    document.getElementById('cor').value = ''
+    document.getElementById('porcent').value = ''
+}
+
+function validaValores(nome, cor, porcent){
     //Validando dados
     let adicionar = true
 
@@ -44,23 +67,18 @@ function recebeValores(){
         }
     }
 
+    //decidindo de os valores são ou não válidos
     if(adicionar){
-        porcentagem.push(new Porcentagem(nome, cor, porcent)) //colocar novo objeto na ultima posição do array
-        $('#confirm').modal('hide') //esconder modal
-
-        colocaGrafico()
+        return true
+    } else {
+        return false
     }
 }
 
-//Array que vão conter as configurações
-let cores = Array()
-let nomes = Array()
-let porcentagens = Array()
-
 function colocaGrafico(atualizarGrafico = false, chartType = 'pie') {
-    const canvas = document.getElementById('myChart')
-
+    //Exibindo e escondendo elementos dependendo se o gráfico está ou não na tela
     //removendo o canvas e adicionando novamente o jumbutron de boas vindas e o select caso não haja valores
+    const canvas = document.getElementById('myChart')
     let jumbotron = document.getElementById('boasVindas')
     let select = document.getElementById('chartType')
     let botao = document.getElementById('baixarImg')
@@ -115,8 +133,8 @@ function colocaGrafico(atualizarGrafico = false, chartType = 'pie') {
     });
 }
 
-function listaValores(){
-    let modalBody = document.getElementById('modalRemoverBody')
+function listaValores(id){
+    let modalBody = document.getElementById(id)
 
     modalBody.innerHTML = 'Não há porcentagens adicionadas'
 
@@ -124,7 +142,11 @@ function listaValores(){
         if(i == 0){
             modalBody.innerHTML = ''
         }
-        modalBody.innerHTML += `${porcentagem[i].nome} &rarr; <button class="btn btn-outline-danger btn-sm" onclick="removeValores(${i}, 1)"> <i class="fas fa-minus"></i> </button> <small class="text-danger">Remover porcentagem</small> <br>`
+        if(id === 'modalRemoverBody'){
+            modalBody.innerHTML += `${porcentagem[i].nome} &rarr; <button class="btn btn-outline-danger btn-sm" onclick="removeValores(${i}, 1)"> <i class="fas fa-minus"></i> </button> <small class="text-danger">Remover porcentagem</small> <br>`
+        } else if(id === 'modalEditarBody'){
+            modalBody.innerHTML += `${porcentagem[i].nome} &rarr; <button class="btn btn-outline-primary btn-sm" onclick="recebeValoresParaEditar(${i})"> <i class="fas fa-edit"></i> </button> <small class="text-primary">Editar porcentagem</small> <br>`
+        }
     }
 }
 
@@ -149,6 +171,58 @@ function removeValores(start, deleteCount) {
 
     //removendo da barra
     $('#remover').modal('hide') //esconder modal
+}
+
+function recebeValoresParaEditar(valor){
+    //Colocar valores anteriores no modal de edição
+    document.getElementById('newNome').value = porcentagem[valor].nome
+    document.getElementById('newCor').value = porcentagem[valor].cor
+    document.getElementById('newPorcent').value = porcentagem[valor].porcent
+
+    $('#editar').modal('show')
+    $('#listarEdit').modal('hide')
+
+    //criar um input hidden para passar o valor que será atualizado
+    if(document.getElementById('porcentagemEditada')){
+        //se esse input ja existir, remova ele
+        document.getElementById('porcentagemEditada').remove()
+    }
+
+    let input = document.createElement('input')
+    input.type = 'hidden'
+    input.id = 'porcentagemEditada'
+    input.value = valor
+    document.getElementById('editForm').appendChild(input)
+}
+
+function editaValores() {
+
+    //recebendo valores
+    let nome = document.getElementById('newNome').value
+    let cor = document.getElementById('newCor').value
+    let porcent = Number(document.getElementById('newPorcent').value)
+    let valor = Number(document.getElementById('porcentagemEditada').value)
+
+    //esvaziando valor de porcentagem antes de editar (para poder validar certinho, senão ele considera os novos valores acima como adicionais, e não substitutos)
+    porcentagens[valor] = 0
+    porcentagem[valor]['porcent'] = 0
+
+    if(validaValores(nome, cor, porcent)){
+        //se for retornado true, ele atualiza os valores e o gráfico
+
+        //editando o valor dos arrays
+        cores[valor] = cor
+        nomes[valor] = nome
+        porcentagens[valor] = porcent
+
+        porcentagem[valor]['nome'] = nome
+        porcentagem[valor]['cor'] = cor
+        porcentagem[valor]['porcent'] = porcent
+
+        //atualizando gráfico
+        colocaGrafico(true)
+        $('#editar').modal('hide')
+    }
 }
 
 function baixarGrafico() {
