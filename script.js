@@ -233,4 +233,3 @@ function baixarGrafico() {
     botaoImg.setAttribute("href", canvas.toDataURL());
     botaoImg.setAttribute("download", "chart.jpg");
 }
-
