@@ -2,6 +2,7 @@
 
 ## link do site
 [acesse e teste o projeto](https://natanbarbosa.github.io/chartMaker/)
+
 _hospedado com github pages_
 
 ## Sobre o projeto
@@ -10,6 +11,9 @@ Esse pequeno aplicativo web tem a simples função de montar um gráfico pizza p
 - [x] não é possível usar a mesma cor em diferentes porcentagens
 - [x] pode usar o mesmo nome
 - [x] Só é possivel colocar valores na porcentagem entre 0 e 100 ~~excluindo o 0 obviamente~~
+
+Além disso o projeto conta com um armazenamento persistente no browser do cliente, sendo usado o __localStorage__ do Navegador por meio do javaScript. 
+Desse jeito, ao recarregar a página o gráfico montado não é perdido
 
 ## tecnologias usadas
 Para a criação do projeto foram usados principalmente
