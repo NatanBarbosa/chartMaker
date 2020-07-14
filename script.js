@@ -1,13 +1,21 @@
 class Porcentagem{
-    constructor(nome, cor, porcent, titulo){
+    constructor(nome, cor, porcent){
         this.nome = nome
         this.cor = cor
         this.porcent = porcent
     }
 }
 
-//Array que vai conter os objetos
-let porcentagem = Array()
+//instância da classe bd que vai mexer com localStorage
+let bd = new BD()
+
+//Array que vai conter os objetos retirados de localStorage
+let porcentagem
+function getPorcentagem() {
+    //função para poder atualizar o array temporário em relação ao localStorage
+    porcentagem = bd.select()
+}
+getPorcentagem()
 
 function recebeValores(){
     let nome = document.getElementById('nome').value
@@ -19,6 +27,9 @@ function recebeValores(){
 
         //colocar novo objeto na ultima posição do array
         porcentagem.push(new Porcentagem(nome, cor, porcent))
+
+        //adicionar objeto ao localStorage
+        bd.insert(new Porcentagem(nome, cor, porcent))
 
         //esconder modal
         $('#confirm').modal('hide')
@@ -87,23 +98,22 @@ function colocaGrafico(chartType = 'pie') {
     let jumbotron = document.getElementById('boasVindas')
     let select = document.getElementById('chartType')
     let botao = document.getElementById('baixarImg')
+    let aviso = document.getElementById('aviso')
 
     if(porcentagem.length === 0){
         jumbotron.className = 'd-block jumbotron'
         canvas.className = 'd-none'
-        
         select.className = 'd-none'
-
         botao.className = 'd-none'
+        aviso.className = 'd-none'
     }
     //esconder Boas vindas e exibindo o canvas e o botão de baixar img e o de selecionar tipo de gráfico
     if(porcentagem.length >= 1){
         jumbotron.className = 'd-none'
         select.className = 'form-control'
-
         canvas.className = 'd-block'
-
         botao.className = 'btn btn-info btn-lg'
+        aviso.className = 'd-block text-info'
     }
 
     let ctx = canvas.getContext('2d');
@@ -141,38 +151,39 @@ function listaValores(id){
             modalBody.innerHTML = ''
         }
         if(id === 'modalRemoverBody'){
-            modalBody.innerHTML += `${porcentagem[i].nome} &rarr; <button class="btn btn-outline-danger btn-sm" onclick="removeValores(${i}, 1)"> <i class="fas fa-minus"></i> </button> <small class="text-danger">Remover porcentagem</small> <br>`
+            modalBody.innerHTML += `${porcentagem[i].nome} &rarr; <button class="btn btn-outline-danger btn-sm" onclick="removeValores(${i})"> <i class="fas fa-minus"></i> </button> <small class="text-danger">Remover porcentagem</small> <br>`
         } else if(id === 'modalEditarBody'){
             modalBody.innerHTML += `${porcentagem[i].nome} &rarr; <button class="btn btn-outline-primary btn-sm" onclick="recebeValoresParaEditar(${i})"> <i class="fas fa-edit"></i> </button> <small class="text-primary">Editar porcentagem</small> <br>`
         }
     }
 }
 
-function removeValores(start, deleteCount) {
-    //removendo do array
-    porcentagem.splice(start,deleteCount)
+function removeValores(key) {
+    //removendo do localStorage
+    let id = porcentagem[key].id
+    bd.delete(id)
 
     //criando um novo canvas para atualizar gráfico
-    const canvas = document.getElementById('myChart')
+    document.getElementById('myChart').remove()
 
-    canvas.remove()
     let newCanvas = document.createElement('canvas')
     newCanvas.id = 'myChart'
     newCanvas.width = 400
     newCanvas.height = 400
 
     document.getElementById('ApresentarCanvas').appendChild(newCanvas)
-    colocaGrafico() //esse parâmetro previne o bug dele clonar a ultima posição do array porcentagem
+    getPorcentagem()
+    colocaGrafico()
 
     //removendo da barra
     $('#remover').modal('hide') //esconder modal
 }
 
-function recebeValoresParaEditar(valor){
+function recebeValoresParaEditar(key){
     //Colocar valores anteriores no modal de edição
-    document.getElementById('newNome').value = porcentagem[valor].nome
-    document.getElementById('newCor').value = porcentagem[valor].cor
-    document.getElementById('newPorcent').value = porcentagem[valor].porcent
+    document.getElementById('newNome').value = porcentagem[key].nome
+    document.getElementById('newCor').value = porcentagem[key].cor
+    document.getElementById('newPorcent').value = porcentagem[key].porcent
 
     $('#editar').modal('show')
     $('#listarEdit').modal('hide')
@@ -186,30 +197,32 @@ function recebeValoresParaEditar(valor){
     let input = document.createElement('input')
     input.type = 'hidden'
     input.id = 'porcentagemEditada'
-    input.value = valor
+    input.value = key
     document.getElementById('editForm').appendChild(input)
 }
 
 function editaValores() {
 
     //recebendo valores
-    let nome = document.getElementById('newNome').value
-    let cor = document.getElementById('newCor').value
-    let porcent = Number(document.getElementById('newPorcent').value)
+    let newNome = document.getElementById('newNome').value
+    let newCor = document.getElementById('newCor').value
+    let newPorcent = Number(document.getElementById('newPorcent').value)
     let valor = Number(document.getElementById('porcentagemEditada').value)
 
     //esvaziando valor de porcentagem antes de editar (para poder validar certinho, senão ele considera os novos valores acima como adicionais, e não substitutos)
     porcentagem[valor]['porcent'] = 0
 
-    if(validaValores(nome, cor, porcent, true)){
+    if(validaValores(newNome, newCor, newPorcent, true)){
         //se for retornado true, ele atualiza os valores e o gráfico
 
-        //editando o valor dos arrays
-        porcentagem[valor]['nome'] = nome
-        porcentagem[valor]['cor'] = cor
-        porcentagem[valor]['porcent'] = porcent
+        //instanciando nova classe de porcentagem para editar
+        let updatePorcentagem = new Porcentagem(newNome, newCor, newPorcent)
+
+        let id = parseInt(porcentagem[valor].id)
+        bd.update(id, updatePorcentagem)
 
         //atualizando gráfico
+        getPorcentagem()
         colocaGrafico()
         $('#editar').modal('hide')
     }
@@ -222,4 +235,19 @@ function baixarGrafico() {
     //Transformando o canvas em uma imagem (toDataURL) para poder baixa-lo
     botaoImg.setAttribute("href", canvas.toDataURL());
     botaoImg.setAttribute("download", "chart.jpg");
+}
+
+function alterarExibicao() {
+    if (porcentagem[0]){
+        //caso exista valores adicionados pelo usuário
+        document.getElementById('boasVindas').className = 'd-none'
+        document.getElementById('myChart').className = 'd-block'
+        document.getElementById('aviso').className = 'd-block text-info'
+        colocaGrafico()
+    } else {
+        //caso não exista valores adicionados pelo usuário
+        document.getElementById('boasVindas').className = 'd-block jumbotron'
+        document.getElementById('myChart').className = 'd-none'
+        document.getElementById('aviso').className = 'd-none'
+    }
 }

@@ -19,7 +19,7 @@
     <script src="localStorage.js"></script>
     
 </head>
-<body>
+<body onload="alterarExibicao()">
     
     <header>
         <div class="container">
@@ -55,7 +55,7 @@
                 <hr>
                 
                 <!-- Tipo do gráfico -->
-                <select name="tipo" id="chartType" class="form-control d-none" onchange="colocaGrafico(true, document.getElementById('chartType').value)">
+                <select name="tipo" id="chartType" class="form-control d-none" onchange="colocaGrafico(document.getElementById('chartType').value)">
                     <option value=""> <strong>Selecione o tipo do gráfico</strong> </option>
                     <option value="pie">Pizza (padrão)</option>
                     <option value="doughnut">Donut</option>
@@ -69,7 +69,7 @@
                     </p>
                     <hr class="my-4">
                     <p> Para começar você pode também clicar no botão abaixo </p>
-                    <small>Assim que for adicionado um valor esse aviso desparecerá</small>
+                    <small class="text-secondary">Assim que for adicionado um valor esse aviso desparecerá</small>
                     <p class="lead">
                         <button class="btn btn-success btn-lg" data-toggle="modal" data-target="#confirm">Comece agora!</button>
                     </p>
@@ -80,6 +80,9 @@
                 <a class="btn btn-info btn-lg d-none" id="baixarImg" onclick="baixarGrafico()"><i class="fas fa-download"></i> Baixar gráfico</a>
                 <!-- chart -->
                 <canvas id="myChart" width="400" height="400" class="d-none"></canvas>
+
+                <br>
+                <small class="text-info" id="aviso"> <i class="fas fa-exclamation-triangle"></i> <strong>Atualize a página</strong> caso o gráfico apresente inconsistências. Seus dados não serão perdidos </small>
 
 			</section>
 			
@@ -205,7 +208,7 @@
 				
 				<hr>
 
-				<button class="btn btn-outline-danger btn-block" onclick="removeValores(0,999)"> Resetar gráfico  </button>
+				<button class="btn btn-outline-danger btn-block" onclick="bd.deleteAll(); getPorcentagem(); colocaGrafico()"> Resetar gráfico  </button>
             </section>
         </div>
     </section>
