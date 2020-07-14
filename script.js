@@ -8,9 +8,29 @@ class Porcentagem{
 
 //instância da classe bd que vai mexer com localStorage
 let bd = new BD()
+let chartType = new ChartType()
 
 //Array que vai conter os objetos retirados de localStorage
 let porcentagem
+
+//configurações de tipo
+function changeChartType(){
+    let selectType = document.getElementById('chartType').value
+    console.log(selectType)
+
+    if(selectType == ""){
+        selectType = chartType.getType()
+    }
+
+    chartType.type = selectType
+
+    //armazenando o tipo no localStorage
+    chartType.armazenaType(chartType)
+
+    //Retirando o item do localStorage para montar o gráfico
+    colocaGrafico(chartType.getType())
+}
+
 function getPorcentagem() {
     //função para poder atualizar o array temporário em relação ao localStorage
     porcentagem = bd.select()
@@ -248,3 +268,4 @@ function alterarExibicao() {
         document.getElementById('aviso').className = 'd-none'
     }
 }
+

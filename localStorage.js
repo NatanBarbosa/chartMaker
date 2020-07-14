@@ -72,3 +72,20 @@ class BD {
         localStorage.setItem('id', 0)
     }
 }
+
+class ChartType {
+    constructor(tipo = this.getType()) {
+        this.type = tipo
+    }
+
+    armazenaType(objType){
+        let JSONType = JSON.stringify(objType)
+        localStorage.setItem('type', JSONType)
+    }
+
+    getType(){
+        let JSONType = localStorage.getItem('type')
+        let OBJType = JSON.parse(JSONType)
+        return OBJType.type
+    }
+}

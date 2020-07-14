@@ -12,8 +12,8 @@ Esse pequeno aplicativo web tem a simples função de montar um gráfico pizza p
 - [x] pode usar o mesmo nome
 - [x] Só é possivel colocar valores na porcentagem entre 0 e 100 ~~excluindo o 0 obviamente~~
 
-O projeto conta com um armazenamento persistente no browser cliente, por meio do __localStorage__, usando o JavaScript para manipula-lo
-Com isso os gráficos criados no site permanecem lá após o reload da página
+Além disso o projeto conta com um armazenamento persistente no browser do cliente, sendo usado o __localStorage__ do Navegador por meio do javaScript. 
+Desse jeito, ao recarregar a página o gráfico montado não é perdido
 
 ## tecnologias usadas
 Para a criação do projeto foram usados principalmente
