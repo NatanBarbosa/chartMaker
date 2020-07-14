@@ -67,5 +67,8 @@ class BD {
 
     deleteAll(){
         localStorage.clear()
+
+        //iniciando o localStorage
+        localStorage.setItem('id', 0)
     }
 }
