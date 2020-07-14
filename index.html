@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
     <title>Monte seu gráfico!!</title>
-    <link rel="icon" type="image/png" href="chart_icon.png">
+    <link rel="icon" type="image/png" href="pieChart.png">
 
     <!-- Css -->
     <link rel="stylesheet" href="estilo.css">
@@ -20,7 +20,7 @@
     <script src="localStorage.js"></script>
     
 </head>
-<body onload="alterarExibicao(); changeChartType()">
+<body onload="alterarExibicao()">
     
     <header>
         <div class="container">
@@ -54,13 +54,6 @@
             <section class="col-lg-6 mb-4" id="ApresentarCanvas">
                 <h2 class="display-4"> Visualização do gráfico</h2>
                 <hr>
-                
-                <!-- Tipo do gráfico -->
-                <select name="tipo" id="chartType" class="form-control d-none" onchange="changeChartType()">
-                    <option value="">Escolha o tipo de gráfico</option>
-                    <option value="pie">Pizza (padrão)</option>
-                    <option value="doughnut">Donut</option>
-                </select>
 
                 <div class="jumbotron" id="boasVindas">
                     <h1 class="display-4">Aqui aparecerá seu gráfico</h1>
