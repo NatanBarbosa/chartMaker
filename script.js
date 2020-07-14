@@ -8,29 +8,9 @@ class Porcentagem{
 
 //instância da classe bd que vai mexer com localStorage
 let bd = new BD()
-let chartType = new ChartType()
 
 //Array que vai conter os objetos retirados de localStorage
 let porcentagem
-
-//configurações de tipo
-function changeChartType(){
-    let selectType = document.getElementById('chartType').value
-    console.log(selectType)
-
-    if(selectType == ""){
-        selectType = chartType.getType()
-    }
-
-    chartType.type = selectType
-
-    //armazenando o tipo no localStorage
-    chartType.armazenaType(chartType)
-
-    //Retirando o item do localStorage para montar o gráfico
-    colocaGrafico(chartType.getType())
-}
-
 function getPorcentagem() {
     //função para poder atualizar o array temporário em relação ao localStorage
     porcentagem = bd.select()
@@ -111,26 +91,23 @@ function percorreArray(atributo) {
     return retorno
 }
 
-function colocaGrafico(chartType = 'pie') {
+function colocaGrafico() {
     //Exibindo e escondendo elementos dependendo se o gráfico está ou não na tela
     //removendo o canvas e adicionando novamente o jumbutron de boas vindas e o select caso não haja valores
     const canvas = document.getElementById('myChart')
     let jumbotron = document.getElementById('boasVindas')
-    let select = document.getElementById('chartType')
     let botao = document.getElementById('baixarImg')
     let aviso = document.getElementById('aviso')
 
     if(porcentagem.length === 0){
         jumbotron.className = 'd-block jumbotron'
         canvas.className = 'd-none'
-        select.className = 'd-none'
         botao.className = 'd-none'
         aviso.className = 'd-none'
     }
     //esconder Boas vindas e exibindo o canvas e o botão de baixar img e o de selecionar tipo de gráfico
     if(porcentagem.length >= 1){
         jumbotron.className = 'd-none'
-        select.className = 'form-control'
         canvas.className = 'd-block'
         botao.className = 'btn btn-info btn-lg'
         aviso.className = 'd-block text-info'
@@ -138,7 +115,7 @@ function colocaGrafico(chartType = 'pie') {
 
     let ctx = canvas.getContext('2d');
     let myChart = new Chart(ctx, {
-        type: chartType,
+        type: 'pie',
         data: {
             labels: percorreArray('nome') , //colocar nome dos objetos
             datasets: [{
@@ -271,4 +248,3 @@ function alterarExibicao() {
         document.getElementById('aviso').className = 'd-none'
     }
 }
-
