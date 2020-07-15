@@ -94,7 +94,7 @@ function percorreArray(atributo) {
 function colocaGrafico() {
     //Exibindo e escondendo elementos dependendo se o gráfico está ou não na tela
     //removendo o canvas e adicionando novamente o jumbutron de boas vindas e o select caso não haja valores
-    const canvas = document.getElementById('myChart')
+    let canvas = document.getElementById('myChart')
     let jumbotron = document.getElementById('boasVindas')
     let botao = document.getElementById('baixarImg')
     let aviso = document.getElementById('aviso')
@@ -151,9 +151,9 @@ function listaValores(id){
             modalBody.innerHTML = ''
         }
         if(id === 'modalRemoverBody'){
-            modalBody.innerHTML += `${porcentagem[i].nome} &rarr; <button class="btn btn-outline-danger btn-sm" onclick="removeValores(${i})"> <i class="fas fa-minus"></i> </button> <small class="text-danger">Remover porcentagem</small> <br>`
+            modalBody.innerHTML += `<button class="btn btn-outline-danger btn-sm mb-2" onclick="removeValores(${i})"> <i class="fas fa-trash"></i> </button> <span style="color: ${porcentagem[i].cor}"> &rarr; ${porcentagem[i].nome}</span> <br>`
         } else if(id === 'modalEditarBody'){
-            modalBody.innerHTML += `${porcentagem[i].nome} &rarr; <button class="btn btn-outline-primary btn-sm" onclick="recebeValoresParaEditar(${i})"> <i class="fas fa-edit"></i> </button> <small class="text-primary">Editar porcentagem</small> <br>`
+            modalBody.innerHTML += `<button class="btn btn-outline-primary btn-sm mb-2" onclick="recebeValoresParaEditar(${i})"> <i class="fas fa-edit"></i> </button> <span style="color: ${porcentagem[i].cor}">&rarr; ${porcentagem[i].nome}</span><br>`
         }
     }
 }
