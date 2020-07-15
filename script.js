@@ -98,12 +98,14 @@ function colocaGrafico() {
     let jumbotron = document.getElementById('boasVindas')
     let botao = document.getElementById('baixarImg')
     let aviso = document.getElementById('aviso')
+    let dica = document.getElementById('dica')
 
     if(porcentagem.length === 0){
         jumbotron.className = 'd-block jumbotron'
         canvas.className = 'd-none'
         botao.className = 'd-none'
         aviso.className = 'd-none'
+        dica.className = 'd-none'
     }
     //esconder Boas vindas e exibindo o canvas e o botão de baixar img e o de selecionar tipo de gráfico
     if(porcentagem.length >= 1){
@@ -111,6 +113,7 @@ function colocaGrafico() {
         canvas.className = 'd-block'
         botao.className = 'btn btn-info btn-lg'
         aviso.className = 'd-block text-info'
+        dica.className = 'd-block text-success'
     }
 
     let ctx = canvas.getContext('2d');
@@ -225,6 +228,19 @@ function editaValores() {
     }
 }
 
+function resetarGrafico(){
+    if(porcentagem[0]){
+        if(confirm('Você deseja mesmo apagar todo o gráfico?')){
+            bd.deleteAll(); 
+            getPorcentagem(); 
+            colocaGrafico()
+        }
+    } else {
+        alert('[ERRO!] Não existem valores para serem apagados')
+    }
+    
+}
+
 function baixarGrafico() {
     let canvas = document.querySelector("#myChart")
     let botaoImg = document.querySelector("#baixarImg")
@@ -240,11 +256,13 @@ function alterarExibicao() {
         document.getElementById('boasVindas').className = 'd-none'
         document.getElementById('myChart').className = 'd-block'
         document.getElementById('aviso').className = 'd-block text-info'
+        document.getElementById('dica').className = 'd-block text-success'
         colocaGrafico()
     } else {
         //caso não exista valores adicionados pelo usuário
         document.getElementById('boasVindas').className = 'd-block jumbotron'
         document.getElementById('myChart').className = 'd-none'
         document.getElementById('aviso').className = 'd-none'
+        document.getElementById('dica').className = 'd-none'
     }
 }
